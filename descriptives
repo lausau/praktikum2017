@@ -12,3 +12,6 @@ tabout gndr using tiedostonimi
 
 * lisätään taulukkoon sarakeprosentit
 tabout gndr using tiedostonnimi, replace cells(freq col)
+
+* lisätään muita muuttujia, muista oneway
+tabout gndr health tiedostonnimi, replace cells(freq col) oneway
