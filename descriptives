@@ -1,0 +1,14 @@
+* lataa tabout -paketti
+ssc install tabout
+
+* apuja ja ohjeita taboutin käyttöön
+help tabout
+
+* miten saadaan sukupuolimuuttujan "gndr" vastaajamäärät taulukkoon
+tabout gndr using tiedostonimi
+  
+  * lisäämällä replace -komento, voidaan tallentaa edellisen tiedostonimen päälle
+  tabout gndr using tiedostonimi, replace
+
+* lisätään taulukkoon sarakeprosentit
+tabout gndr using tiedostonnimi, replace cells(freq col)
