@@ -35,4 +35,9 @@ tabout gndr using tiedostonnimi, replace cells(freq col)
 * lisätään muita muuttujia, muista laittaa oneway loppuun (muuten tulostaa ristiintaulukoinnin)
 tabout gndr health tiedostonnimi, replace cells(freq col) oneway
 
-
+* muokataan numeroita ja lisätään otsikot
+  * format -komennon ensimmäinen numero määrittelee desimaalien määrän ensimmäisessä
+  * sarakkeessa ja toinen numero toisessa sarakkeessa
+  * clab -komento määrittelee järjestyksessä sarakkeiden otsikot
+tabout gndr health using tiedostonnimi.xls, replace cells(freq col) ///
+	format(0 1) clab(N Col_%) oneway
