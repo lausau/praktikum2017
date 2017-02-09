@@ -1,11 +1,23 @@
-* Tarkemmat ohjeet tabout -paketin käyttöön löytyy täältä:
-* http://www.ianwatson.com.au/stata/tabout_tutorial.pdf
+***********************************
+*** aineiston kuvailu -taulukko ***
+
+* 1. katsele ensin muuttujia yksittäin
+ta health // jakaumat, vastaajamäärät
+hist health // kuvallinen esitys
+
+* 2. uudelleenluokittele tarvittaessa (recode tai replace-komennot)
+* 3. merkkaa refusal / no answer ym. vastaukset puuttuviksi (muuten näkyvät turhaan lopullisessa taulukossa)
+
+* 4. ennen taulukon luomista pitää ladata paketti nimeltä "tabout"
 
 * lataa tabout -paketti
 ssc install tabout
 
 * apuja ja ohjeita taboutin käyttöön
 help tabout
+
+* Tarkemmat kirjalliset ohjeet tabout -paketin käyttöön löytyy täältä:
+* http://www.ianwatson.com.au/stata/tabout_tutorial.pdf
 
 **************************
 *** TAULUKON TEKEMINEN ***
