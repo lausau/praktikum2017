@@ -1,17 +1,26 @@
+* Tarkemmat ohjeet tabout -paketin käyttöön löytyy täältä:
+* http://www.ianwatson.com.au/stata/tabout_tutorial.pdf
+
 * lataa tabout -paketti
 ssc install tabout
 
 * apuja ja ohjeita taboutin käyttöön
 help tabout
 
+**************************
+*** TAULUKON TEKEMINEN ***
+
 * miten saadaan sukupuolimuuttujan "gndr" vastaajamäärät taulukkoon
-tabout gndr using tiedostonimi
+tabout gndr using tiedostonimi.xls
   
+  * voi myös käyttää muita tiedostomuotoja, esim .rtf
   * lisäämällä replace -komento, voidaan tallentaa edellisen tiedostonimen päälle
-  tabout gndr using tiedostonimi, replace
+  tabout gndr using tiedostonimi.xls, replace
 
 * lisätään taulukkoon sarakeprosentit
 tabout gndr using tiedostonnimi, replace cells(freq col)
 
-* lisätään muita muuttujia, muista oneway
+* lisätään muita muuttujia, muista laittaa oneway loppuun (muuten tulostaa ristiintaulukoinnin)
 tabout gndr health tiedostonnimi, replace cells(freq col) oneway
+
+
