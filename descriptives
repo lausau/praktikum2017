@@ -39,8 +39,7 @@ tabout gndr using tiedostonnimi.xls, replace cells(freq col)
 tabout gndr health tiedostonnimi.xls, replace cells(freq col) oneway
 
 * muokataan numeroita ja lisätään otsikot
-  * format -komennon ensimmäinen numero määrittelee desimaalien määrän ensimmäisessä
-  * sarakkeessa ja toinen numero toisessa sarakkeessa
-  * clab -komento määrittelee järjestyksessä sarakkeiden otsikot
+  * format -komennon määrittelee desimaalien määrän (tässä ekassa nolla, tokassa yksi desimaali)
+  * clab -komento määrittelee sarakkeiden otsikot (tässä eka "N" toka "Col_%")
 tabout gndr health using tiedostonnimi.xls, replace cells(freq col) ///
 	format(0 1) clab(N Col_%) oneway
