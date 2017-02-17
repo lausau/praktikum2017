@@ -77,14 +77,11 @@ ssc install estout // estout
 	
 *** ASKELTAVA REGRESSIOANALYYSI ***
 
-* mark nomiss ja markout = maarittelevat muuttujat siten etta ottavat mukaan vain
-* if nomiss = vain jos ei puuttuva arvo [maaritelty ylhaalla]
-* aw=paino = painottaa aineiston
+* mark nomiss ja markout = maarittelevat muuttujat siten etta ottavat mukaan vain jos ei puuttuva arvo. Tama oltava regressiomallien vertailujen vuoksi.
+* aw=paino = painottaa aineiston [paino laskettu taman do-filen alussa]
 
-
-* ei-puuttuvat arvot. Tama oltava regressiomallien vertailujen vuoksi.
 mark nomiss // tama ajetaan vain kerran
-markout nomiss henkhv työtunnit gndr agea koulutus
+markout nomiss henkhv työtunnit gndr agea koulutus // laittakaa tahan kaikki muuttujat joita regressioanalyysissa kaytatte
 
 * tehdaan ensimmainen malli
 reg henkhv työtunnit if nomiss [aw=paino] 
@@ -109,7 +106,7 @@ esttab malli1 malli2 malli3 using regtable.rtf, b(3) se(3) r2 nodepvars label no
 	- Ensimmaisen mallin on hyva olla "tyhja", jotta nahdaan miten se kaikkein
 	mielenkiintoisin selittava tekija toimii.
 	- toiseen malliin voidaan lisata esimerkiksi toiseksi mielenkiintoisin tekija (edu),
-	jos ollaan kiinnostuneita sen paavaikutuksista.
+	jos ollaan kiinnostuneita sen (paa)vaikutuksista.
 	- Lopuksi voidaan lisata muita selittavia tekijoita (joskus nama kaksi viimeista mallia tehdaan toisinpain). 
 	viimeisessa mallissa on joka tapauksessa oltava kaikki selittavat tekijat 
 */
