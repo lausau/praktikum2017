@@ -1,0 +1,115 @@
+*** ALKUHOMMAT ***************
+
+* 1. avatkaa ESS7 data
+* 2. ajakaa ESS_miss.do (tuli aineiston lataamisen mukana)
+
+*** ladataan mahdolliset tarvittavat paketit
+ssc install tabout // tabout
+ssc install estout // estout
+
+* taulukko-ohjeet
+	* https://github.com/lausau/praktikum2017/blob/master/descriptives
+
+* regressio-ohjeet
+	* https://github.com/lausau/praktikum2017/blob/master/descriptives 
+	
+* painoista (ajakaa tama)
+	gen paino = pweight*pspwght
+	* https://www.europeansocialsurvey.org/docs/methodology/ESS_weighting_data_1.pdf
+
+*******************************
+
+*** ajakaa omat muuttujamuunnokset ***
+
+*** Koulutusmuuttuja
+
+	* tehty ISCED -asteikolla
+	* suomalaisia vastineita taalla: http://www.tilastokeskus.fi/meta/luokitukset/_linkki/iscedaste11.html
+	
+	/* 
+	ta eisced
+
+	Highest level of education, ES - ISCED  |      Freq.     Percent        Cum.
+	----------------------------------------+-----------------------------------
+	ES-ISCED I , less than lower secondary  |        535        8.58        8.58
+	ES-ISCED II, lower secondary		    |        801       12.85       21.43
+	ES-ISCED IIIb, lower tier upper seconda |        816       13.09       34.52
+	ES-ISCED IIIa, upper tier upper seconda |      1,171       18.78       53.30
+	ES-ISCED IV, advanced vocational, sub-d |      1,049       16.83       70.13
+	ES-ISCED V1, lower tertiary education,  |      1,033       16.57       86.70
+	ES-ISCED V2, higher tertiary education, |        819       13.14       99.84
+                                  O	   ther |         10        0.16      100.00
+	----------------------------------------+-----------------------------------
+									Total   |      6,234      100.00
+	*/					
+									
+	* luokitellaan uusiksi kolmiluokkaiseksi (perus/keski/korkea -aste)
+	gen koulutus = .
+		replace koulutus = 1 if eisced < 3 // perusaste
+		replace koulutus = 2 if eisced > 2 & eisced < 5 // keskiaste
+		replace koulutus = 3 if eisced > 4 // korkea-aste
+		replace koulutus = . if eisced == 55 // "other" puuttuvaksi arvoksi
+		
+	* labelointi
+	label variable koulutus "koulutusaste"
+	label define koulutuslab 1 "perusaste" 2 "keskiaste" 3 "korkea-aste"
+	label values koulutus koulutuslab
+		
+	* tarkastellaan muuttujaa
+	ta koulutus eisced
+	
+	/*
+		ta koulutus eisced
+		
+
+	koulutusaste|                    Highest level of education, ES - ISCED
+			    | ES-ISCED   ES-ISCED   ES-ISCED   ES-ISCED   ES-ISCED   ES-ISCED   ES-ISCED  |     Total
+	------------+-----------------------------------------------------------------------------+----------
+	perusaste   |       535        801          0          0          0          0          0 |     1,336 
+	keskiaste   |         0          0        816      1,171      1,049          0          0 |     3,036 
+	korkea-aste |         0          0          0          0          0      1,033        819 |     1,852 
+	------------+-----------------------------------------------------------------------------+----------
+		  Total |       535        801        816      1,171      1,049      1,033        819 |     6,224 
+	*/
+	
+
+	
+	
+*** ASKELTAVA REGRESSIOANALYYSI ***
+
+* mark nomiss ja markout = maarittelevat muuttujat siten etta ottavat mukaan vain
+* if nomiss = vain jos ei puuttuva arvo [maaritelty ylhaalla]
+* aw=paino = painottaa aineiston
+
+
+* ei-puuttuvat arvot. Tama oltava regressiomallien vertailujen vuoksi.
+mark nomiss // tama ajetaan vain kerran
+markout nomiss henkhv työtunnit gndr agea koulutus
+
+* tehdaan ensimmainen malli
+reg henkhv työtunnit if nomiss [aw=paino] 
+margins, dydx(*) // tallennetaan marginaaliefektit
+est sto malli1 // tallennetaan ensimmaisen mallin estimaatit
+
+* toinen malli
+reg henkhv työtunnit i.koulutus if nomiss [aw=paino]
+margins, dydx(*)
+est sto malli2
+
+* kolmas malli
+reg henkhv työtunnit gndr c.agea i.koulutus if nomiss [aw=paino]
+margins, dydx(*)
+est sto malli3
+
+* tuodaan mallit yhteen ja tallennetaan nimella "regtable.rtf"
+esttab malli1 malli2 malli3 using regtable.rtf, b(3) se(3) r2 nodepvars label nobase replace
+
+*** HUOMIOITA
+/* tehkaa maksimissaan nelja mallia.
+	- Ensimmaisen mallin on hyva olla "tyhja", jotta nahdaan miten se kaikkein
+	mielenkiintoisin selittava tekija toimii.
+	- toiseen malliin voidaan lisata esimerkiksi toiseksi mielenkiintoisin tekija (edu),
+	jos ollaan kiinnostuneita sen paavaikutuksista.
+	- Lopuksi voidaan lisata muita selittavia tekijoita (joskus nama kaksi viimeista mallia tehdaan toisinpain). 
+	viimeisessa mallissa on joka tapauksessa oltava kaikki selittavat tekijat 
+*/
