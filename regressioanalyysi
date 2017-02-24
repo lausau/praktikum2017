@@ -72,6 +72,14 @@ ssc install estout // estout
 		  Total |       535        801        816      1,171      1,049      1,033        819 |     6,224 
 	*/
 	
+*** KUVAILEVIA ANALYYSEJA ***
+
+* GRAAFI
+
+* kuva jossa tyotunnit ja henkinen hyvinvointi
+twoway (histogram henkhv if tyotunnit==1, color(green) width(1) percent) ///
+       (histogram henkhv if tyotunnit==2, width(1) percent ///
+	   fcolor(none) lcolor(black)), legend(order(1 "osa-aika" 2 "kokoaika" ))
 
 	
 	
@@ -99,7 +107,11 @@ margins, dydx(*)
 est sto malli3
 
 * tuodaan mallit yhteen ja tallennetaan nimella "regtable.rtf"
-esttab malli1 malli2 malli3 using regtable.rtf, b(3) se(3) r2 nodepvars label nobase replace
+esttab malli1 malli2 malli3 using regtable.rtf, b(3) se(3) r2 nodepvars ///
+	label mtitles("Malli 1" "Malli 2" "Malli 3") nonum compress ///
+	replace title(Taulukko 1. tähän taulukon yläpuolelle tuleva teksti)
+
+	* "nonum" poistaa numerot (1) (2) (3) -Mallitekstien päältä
 
 *** HUOMIOITA
 /* tehkaa maksimissaan nelja mallia.
