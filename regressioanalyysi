@@ -21,7 +21,7 @@ ssc install estout // estout
 
 *** ajakaa omat muuttujamuunnokset ***
 
-*** Koulutusmuuttuja
+*** KOULUTUS
 
 	* tehty ISCED -asteikolla
 	* suomalaisia vastineita taalla: http://www.tilastokeskus.fi/meta/luokitukset/_linkki/iscedaste11.html
@@ -71,6 +71,46 @@ ssc install estout // estout
 	------------+-----------------------------------------------------------------------------+----------
 		  Total |       535        801        816      1,171      1,049      1,033        819 |     6,224 
 	*/
+
+
+*** SIVIILISAATY
+
+* Luokittelu Tilastokeskuksesta:
+* http://tilastokeskus.fi/meta/luokitukset/siviilisaaty/001-2002/index.html
+/* 
+	ta maritalb
+
+       Legal marital status, post coded |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                        Legally married |     19,863       49.43       49.43
+    In a legally registered civil union |        346        0.86       50.29
+                      Legally separated |        227        0.56       50.85
+ Legally divorced/civil union dissolved |      4,050       10.08       60.93
+             Widowed/civil partner died |      3,510        8.73       69.67
+None of these (NEVER married or in lega |     11,777       29.31       98.97
+                                Refusal |        109        0.27       99.25
+                             Don't know |        137        0.34       99.59
+                              No answer |        166        0.41      100.00
+----------------------------------------+-----------------------------------
+                                  Total |     40,185      100.00
+*/					
+							
+	* luokitellaan uusiksi neli (perus/keski/korkea -aste)
+	gen ss = .
+		replace ss = 1 if maritalb == 6 // naimaton
+		replace ss = 2 if maritalb == 1 | maritalb == 2 // avo- tai avioliitto
+		replace ss = 3 if inlist(maritalb, 3, 4, 5, 77, 88, 99) // eronnut, leski tai muu
+
+		
+	* labelointi
+	label variable ss "siviilisaaty"
+	label define ssl 1 "naimaton" 2 "avo- tai avioliitto" 3 "muu"
+	label values ss ssl
+		
+	* tarkastellaan muuttujaa
+	ta maritalb ss
+	
+	
 	
 *** KUVAILEVIA ANALYYSEJA ***
 
