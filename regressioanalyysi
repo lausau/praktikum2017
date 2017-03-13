@@ -46,8 +46,8 @@ ssc install estout // estout
 	* luokitellaan uusiksi kolmiluokkaiseksi (perus/keski/korkea -aste)
 	gen koulutus = .
 		replace koulutus = 1 if eisced < 3 // perusaste
-		replace koulutus = 2 if eisced > 2 & eisced < 5 // keskiaste
-		replace koulutus = 3 if eisced > 4 // korkea-aste
+		replace koulutus = 2 if eisced > 2 & eisced < 6 // keskiaste
+		replace koulutus = 3 if eisced > 5 // korkea-aste
 		replace koulutus = . if eisced == 55 // "other" puuttuvaksi arvoksi
 		
 	* labelointi
